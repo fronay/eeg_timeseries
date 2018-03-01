@@ -3,7 +3,7 @@ import numpy as np
 from sklearn import tree, preprocessing, svm
 from sklearn.cross_validation import train_test_split, cross_val_score, ShuffleSplit
 from sklearn.ensemble import RandomForestClassifier
-# my shit:
+# previous script (daisy-chained)
 from preprocess import *
 
 # -- transform list of arrays into numpy array:

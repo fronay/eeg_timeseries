@@ -2,25 +2,20 @@
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
-# *Previously* on 24:
+# previous script...
 from import_raw import *
-## other shit
 from scipy import stats, signal
 from peakdetect import peakdet
 # import scipy.fftpack
 
 def length_fix(arr_list, len):
-	# get rid of non-standard length samples because they fuck up the np.stack
+	# get rid of non-standard length samples because they mess up the np.stack
 	for ind, arr in enumerate(arr_list):
 		# print arr.shape[0] == tic
 		if arr.shape[0] != len:
 			arr_list.pop(ind)
 			print "removed {}".format(arr)
-		"""
-		except (IndexError, AttributeError):
-			arr_list.pop(ind)
-			print "removed {}".format(arr)
-		"""
+
 	return arr_list
 
 def main_peaks(vector):
@@ -64,9 +59,7 @@ def transform_sample(eeg, hypno, tic, sub_sample=True, peaks=False):
 		sel = data[data[:,1] == cl]
 		##  now that split by class is done, only interested in signal column, so index sel as [:,0]
 		raw_class_data = np.split(sel[:,0], sel.shape[0]/tic)
-		# print  "yoo0", len(raw_class_data)
 		raw_class_data = length_fix(raw_class_data, len=tic)
-		# print  "yoo1", len(raw_class_data)
 		fourier_class_data = np.fft.fft(raw_class_data)
 		if sub_sample and tic != 50:
 			sample_ratio = tic/50
@@ -94,7 +87,6 @@ def transform_sample(eeg, hypno, tic, sub_sample=True, peaks=False):
 
 		## ----  add data to complete dataset
 		FULL_RAW.extend(raw_class_data)
-		# print "yoo2", len(FULL_RAW)
 		FULL_FOURIER.extend(fourier_class_data)
 		FULL_CLASS.extend([cl]*fourier_class_data.shape[0])
 		PEAK_FOURIER.extend(fourier_peak_data)
@@ -104,7 +96,7 @@ def transform_sample(eeg, hypno, tic, sub_sample=True, peaks=False):
 	return FULL_RAW, FULL_FOURIER, FULL_CLASS, PEAK_FOURIER
 
 FULL_RAW, FULL_FOURIER, FULL_CLASS, PEAK_FOURIER = [],[],[],[]
-# fuck, only use 200 Hz for now:
+#  only use 200 Hz for now:
 # indices = [i for i, x in enumerate(TIC_LIST) if x == 200]
 """
 for i in range(1,9):
@@ -140,7 +132,6 @@ for pos, tigger in enumerate(TIC_LIST):
 # hint: when accessing dict afterwards, can do it as fourier_class_dict['class_value'][column,row]
 
 # --- bonus: plot one of the fouriers to check if sensible
-# (lots of TODOs here for checking...)
 def plot_fourier(fft_vals):
 	# freq=np.fft.fftfreq(fft_vals.shape[0], d=1.0/tic)
 	N = 50
